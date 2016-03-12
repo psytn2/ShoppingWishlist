@@ -14,6 +14,8 @@ class WishlistViewController: UIViewController, UITableViewDelegate, UITableView
     @IBOutlet weak var tableView: UITableView!
     
     var products : [Product] = []
+    
+    var selectedProduct : Product? = nil
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,15 +62,13 @@ class WishlistViewController: UIViewController, UITableViewDelegate, UITableView
         product.title = "Nike Roshe"
         product.shop = "Footlocker"
         product.image = UIImageJPEGRepresentation(UIImage(named: "nike-roshe.jpg")!, 1)
+        product.reference = "NR001"
         
+        // not found
         do {
             try context.save()
         } catch _ {
         }
-        
-        
-        
-        
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -85,7 +85,16 @@ class WishlistViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        self.selectedProduct = self.products[indexPath.row]
         self.performSegueWithIdentifier("tableViewToDetailsSegue", sender: self)
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if(segue.identifier == "tableViewToDetailsSegue")
+        {
+            let productDetailsVC = segue.destinationViewController as! ProductDetailsViewController
+            productDetailsVC.product = self.selectedProduct
+        }
     }
 
 }

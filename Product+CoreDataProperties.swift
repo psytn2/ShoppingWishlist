@@ -13,9 +13,9 @@ import Foundation
 import CoreData
 
 extension Product {
-
+    
+    @NSManaged var reference: String?
     @NSManaged var title: String?
     @NSManaged var shop: String?
     @NSManaged var image: NSData?
-
 }
